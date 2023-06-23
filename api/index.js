@@ -7,12 +7,17 @@ const Place = require('./models/Place')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
+const fs = require('fs')
+const download = require('image-downloader')
+const multer = require('multer')
 
 const app = express()
 const salt = bcrypt.genSaltSync(10)
 mongoose.connect(process.env.MONGO_URI)
 
 // Middleware
+const photosMiddleware = multer({dest: 'uploads/'})
+app.use('/uploads', express.static(__dirname + '/uploads'))
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
@@ -61,6 +66,32 @@ app.post('/login', async (req, res) => {
 // User Logout
 app.post('/logout', (req, res) => {
     res.cookie('token', '').json('logged out')
+})
+
+// Upload Photos By Link
+app.post('/upload-by-link', async (req, res) => {
+    const { link } = req.body
+    const newName = "photo" + Date.now() + '.jpg'
+    await download.image({
+        url: link,
+        dest: `${__dirname}/uploads/${newName}`
+    })
+    res.json(newName)
+})
+
+// Upload Photos by Upload
+app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
+    const uploadedFiles = []
+    for (let i = 0; i < req.files.length; i++) {
+        const path = req.files[i].path
+        const originalname = req.files[i].originalname
+        const parts = originalname.split('.')
+        const ext = parts[parts.length - 1]
+        const newPath = path + '.' + ext
+        fs.renameSync(path, newPath)
+        uploadedFiles.push(newPath.replace('uploads/', ''))
+    }
+    res.json(uploadedFiles)
 })
 
 app.listen(8000) 

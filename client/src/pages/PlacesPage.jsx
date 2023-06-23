@@ -1,31 +1,25 @@
 import { useEffect } from "react"
-import { Link } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { Link, useParams } from "react-router-dom"
+import { useDispatch } from "react-redux"
 import { setPage } from "../redux/pageSlice"
+import PlaceForm from "../components/PlaceForm"
 
 const PlacesPage = () => {
     const dispatch = useDispatch()
-    const page = useSelector((state) => state.page.page)
-
-    console.log(page)
+    const { action } = useParams()
 
     useEffect(() => {
         dispatch(setPage('/account/places'))
     }, [dispatch])
 
-    const handleAddPlace = () => {
-        dispatch(setPage('/account/places/new'))
-    }
-
   return (
     <div>
 
         {/* Display if NOT adding new place */}
-        {page === '/account/places' && (
+        {action !== 'new' && (
             <div 
             className="text-center">
                 <Link 
-                onClick={handleAddPlace}
                 className="bg-primary text-white py-2 px-5 rounded-full inline-flex gap-1" 
                 to='/account/places/new'>
         
@@ -45,15 +39,8 @@ const PlacesPage = () => {
         )}
 
         {/* Display when Adding new place */}
-        {page === '/account/places/new' && (
-            <div>
-                <form>
-                    <input 
-                    type="text" 
-                    placeholder="title, for eg. My Great Villa"/>
-                </form>
-                Testing
-            </div>
+        {action === 'new' && (
+            <PlaceForm/>
         )}
 
     </div>
