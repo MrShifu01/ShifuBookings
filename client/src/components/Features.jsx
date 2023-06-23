@@ -12,7 +12,7 @@ const Features = ({selected, onChange}) => {
 
     }
   return (
-    <div>
+    <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
 {/* Wifi */}
         <label className="cursor-pointer flex rounded-xl items-center gap-2 border p-4 " >
             <input 

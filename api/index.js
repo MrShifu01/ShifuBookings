@@ -94,4 +94,27 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
     res.json(uploadedFiles)
 })
 
+app.post('/places', async (req, res) => {
+    const { token } = req.cookies
+    const { title, addedPhotos, location, description, checkIn, checkOut, maxGuests, price, features, extraInfo } = req.body
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
+        if (error) throw error
+        await Place.create({
+            owner: userData.id,
+            title: title,
+            location: location,
+            photos: addedPhotos,
+            description: description,
+            features: features,
+            extraInfo: extraInfo,
+            checkIn: checkIn,
+            checkOut: checkOut,
+            maxGuests: maxGuests,
+            price: price,
+        })
+    })
+    res.status(200).json('Place Added')
+    
+})
+
 app.listen(8000) 
