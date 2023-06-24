@@ -15,10 +15,10 @@ const Features = ({selected, onChange}) => {
     <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
 {/* Wifi */}
         <label className="cursor-pointer flex rounded-xl items-center gap-2 border p-4 " >
-            <input 
+            <input
             type="checkbox"
             name="wifi"
-            // checked={}
+            checked={selected.includes('wifi')}
             onChange={handleCheckboxClick}
             />
             <svg 
@@ -41,6 +41,7 @@ const Features = ({selected, onChange}) => {
             <input 
             type="checkbox"
             name="parking"
+            checked={selected.includes('parking')}
             onChange={handleCheckboxClick}
             />
             <svg 
@@ -63,6 +64,7 @@ const Features = ({selected, onChange}) => {
             <input 
             type="checkbox"
             name="tv"
+            checked={selected.includes('tv')}
             onChange={handleCheckboxClick}
             />
             <svg 
@@ -85,6 +87,7 @@ const Features = ({selected, onChange}) => {
             <input 
             type="checkbox"
             name="service"
+            checked={selected.includes('service')}
             onChange={handleCheckboxClick}
             />
             <svg 
@@ -107,6 +110,7 @@ const Features = ({selected, onChange}) => {
             <input 
             type="checkbox"
             name="entrance"
+            checked={selected.includes('entrance')}
             onChange={handleCheckboxClick}
             />
             <svg 

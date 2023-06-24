@@ -1,10 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from 'axios'
 import Upload from "./Upload"
 import Features from "./Features"
-import { Navigate } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
+import AccountNav from "./AccountNav"
 
 const PlaceForm = () => {
+    const {id} = useParams()
     const [title, setTitle] = useState('')
     const [location, setLocation] = useState('')
     const [addedPhotos, setAddedPhotos] = useState('')
@@ -17,13 +19,37 @@ const PlaceForm = () => {
     const [price, setPrice] = useState(100)
     const [redirect, setRedirect] = useState(false)
 
+    useEffect(() => {
+        if (!id) {
+            return
+        }
+        const getPlaceDataById = async () => {
+            const response = await axios.get(`/places/${id}`)
+            const data = response.data
+            setTitle(data.title)
+            setLocation(data.location)
+            setAddedPhotos(data.photos)
+            setCheckIn(data.checkIn)
+            setCheckOut(data.checkOut)
+            setDescription(data.description)
+            setMaxGuests(data.maxGuests)
+            setPrice(data.price)
+            setFeatures(data.features)
+            setExtraInfo(data.extraInfo)
+        } 
+
+        getPlaceDataById()
+    }, [id])
+
+
     function inputHeader(text) {
         return <h2 className="text-xl mt-4">{text}</h2>
     }
 
-    const handleAddPlace = async (e) => {
+    const handleSavePlace = async (e) => {
         e.preventDefault()
-        const data = {
+
+        const placeData = {
             title,
             location, 
             addedPhotos, 
@@ -35,7 +61,16 @@ const PlaceForm = () => {
             maxGuests, 
             price
         }
-        await axios.post('/places', data)
+
+        if (id) {
+            const updateData = {
+                id,
+                ...placeData
+            }
+            await axios.put('/places', updateData)
+        } else {
+            await axios.post('/places', placeData)
+        }
         setRedirect(true)
     }
 
@@ -45,7 +80,8 @@ const PlaceForm = () => {
 
   return (
     <div>
-        <form onSubmit={handleAddPlace}>
+        <AccountNav/>
+        <form onSubmit={handleSavePlace}>
 
 {/* Title */}
             <div>

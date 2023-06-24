@@ -117,4 +117,37 @@ app.post('/places', async (req, res) => {
     
 })
 
+app.get('/places', (req, res) => {
+    const { token } = req.cookies
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
+        if (error) throw error
+        const userId = userData.id
+        const userPlaces =  await Place.find({owner: userId})
+        res.status(200).json(userPlaces)
+    })
+})
+
+app.get('/places/:id', async (req, res) => {
+    const { id } = req.params
+    const placeInfo = await Place.findById(id)
+    res.json(placeInfo)
+})
+
+app.put('/places', async (req, res) => {
+    const { token } = req.cookies
+    const { id, title, addedPhotos, location, description, checkIn, checkOut, maxGuests, price, features, extraInfo } = req.body
+    
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
+        const placeDoc = await Place.findById(id)
+        if (error) throw error
+        if (userData.id === placeDoc.owner.toString()) {
+            await Place.updateOne({_id:id}, {$set: {title, photos:addedPhotos, location, description, checkIn, checkOut, maxGuests, price, features, extraInfo}})
+            
+            res.json('ok')
+        }
+    })
+
+    
+})
+
 app.listen(8000) 
