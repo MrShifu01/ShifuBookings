@@ -1,19 +1,9 @@
-import { Link, useNavigate } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
-import  { resetUser } from '../redux/userSlice'
-import axios from 'axios'
+import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
+
 
 const Header = () => {
     const user = useSelector((state) => state.user.user)
-    const navigate = useNavigate()
-    
-// TEMPORARY LOGOUT BUTTON
-    // const dispatch = useDispatch()
-    // const handleLogout = async () => {
-    //     await axios.post('/logout')
-    //     dispatch(resetUser())
-    //     navigate('/')
-    // }
 
   return (
     <div>
@@ -44,8 +34,6 @@ const Header = () => {
                 </button>
             </div>
 
-{/* Temp Logout!!!!!!!!!!!!!!!!!!!!!
-            <div className='flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300'><button className="bg-white" onClick={handleLogout}>Logout</button></div> */}
 
             {/* User Widget */}
             <div className='flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300'>

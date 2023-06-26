@@ -94,6 +94,7 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
     res.json(uploadedFiles)
 })
 
+// Post a new place
 app.post('/places', async (req, res) => {
     const { token } = req.cookies
     const { title, addedPhotos, location, description, checkIn, checkOut, maxGuests, price, features, extraInfo } = req.body
@@ -117,7 +118,8 @@ app.post('/places', async (req, res) => {
     
 })
 
-app.get('/places', (req, res) => {
+// Get places for a specific user
+app.get('/user-places', (req, res) => {
     const { token } = req.cookies
     jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
         if (error) throw error
@@ -127,12 +129,14 @@ app.get('/places', (req, res) => {
     })
 })
 
+// Get individual place according to ID
 app.get('/places/:id', async (req, res) => {
     const { id } = req.params
     const placeInfo = await Place.findById(id)
     res.json(placeInfo)
 })
 
+// Update Places
 app.put('/places', async (req, res) => {
     const { token } = req.cookies
     const { id, title, addedPhotos, location, description, checkIn, checkOut, maxGuests, price, features, extraInfo } = req.body
@@ -148,6 +152,19 @@ app.put('/places', async (req, res) => {
     })
 
     
+})
+
+app.get('/places', async (req, res) => {
+    const places = await Place.find()
+    res.json(places)
+})
+
+// Get One place
+app.get('/place/:id', async (req, res) => {
+    const {id} = req.params
+    const place = await Place.findById(id)
+    console.log(place)
+    res.json(place)
 })
 
 app.listen(8000) 

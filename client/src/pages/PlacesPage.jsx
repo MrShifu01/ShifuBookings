@@ -16,7 +16,7 @@ const PlacesPage = () => {
 
     useEffect(() => {
         const getPlaces = async () => {
-            const response = await axios.get('/places')
+            const response = await axios.get('/user-places')
             setPlaces(response.data)
         }
 
