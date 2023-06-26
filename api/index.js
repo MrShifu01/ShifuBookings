@@ -190,7 +190,7 @@ app.get('/bookings', async (req, res) => {
     jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
         if (error) throw error
         const user = userData.id
-        const bookingDocs = await Booking.find({user})
+        const bookingDocs = await Booking.find({user}).populate('place').populate('user')
         res.status(200).json(bookingDocs)
     })
     
