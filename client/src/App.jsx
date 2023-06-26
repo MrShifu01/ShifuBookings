@@ -9,6 +9,7 @@ import axios from 'axios'
 import PlaceForm from './components/PlaceForm'
 import PlacesPage from './pages/PlacesPage'
 import BookingsPage from './pages/BookingsPage'
+import BookingPage from './pages/BookingPage'
 import PlacePage from './pages/PlacePage'
 
 axios.defaults.baseURL = 'http://localhost:8000'
@@ -24,6 +25,7 @@ function App() {
           <Route path='/register' element={<RegisterPage/>} />
           <Route path='/account' element={<AccountPage/>} />
           <Route path='/account/bookings' element={<BookingsPage/>} />
+          <Route path='/account/bookings/:id' element={<BookingPage/>} />
           <Route path='/account/places' element={<PlacesPage/>} />
           <Route path='/account/places/new' element={<PlaceForm/>} />
           <Route path='/account/places/:id' element={<PlaceForm/>} />

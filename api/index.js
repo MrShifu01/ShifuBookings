@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser')
 const fs = require('fs')
 const download = require('image-downloader')
 const multer = require('multer')
+const Booking= require('./models/Booking')
 
 const app = express()
 const salt = bcrypt.genSaltSync(10)
@@ -163,8 +164,36 @@ app.get('/places', async (req, res) => {
 app.get('/place/:id', async (req, res) => {
     const {id} = req.params
     const place = await Place.findById(id)
-    console.log(place)
     res.json(place)
+})
+
+// Make a booking
+app.post('/bookings', async (req, res) => {
+    const { checkIn, checkOut, guests, name, email, place, price } = req.body
+    const { token } = req.cookies
+
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
+        if (error) throw error
+        const bookingDoc = await Booking.create({
+            checkIn, checkOut, guests, name, email, place, price, user:userData.id
+        })
+        res.status(200).json(bookingDoc)
+    })
+
+
+})
+
+// Get users bookings
+app.get('/bookings', async (req, res) => {
+    const { token } = req.cookies
+
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
+        if (error) throw error
+        const user = userData.id
+        const bookingDocs = await Booking.find({user})
+        res.status(200).json(bookingDocs)
+    })
+    
 })
 
 app.listen(8000) 
