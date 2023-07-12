@@ -26,7 +26,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
     credentials:true,
-    origin: ['http://localhost:5173', 'https://shifubookings.vercel.app']
+    origin: ['http://localhost:5173', 'https://shifubookings.vercel.app', '*']
 }))
 
 // Amazon AWS s3 bucket
