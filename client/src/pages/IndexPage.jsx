@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import Image from "../components/Image"
 
 const IndexPage = () => {
   const [places, setPlaces] = useState([])
@@ -24,7 +25,7 @@ const IndexPage = () => {
   {places.length > 0 && places.map(place => (
     <Link to={`/place/${place._id}`} key={place._id}>
       <div className="bg-gray-500 mb-2 rounded-2xl flex">
-        <img className="rounded-2xl aspect-square object-cover" src={`http://localhost:8000/uploads/${place.photos[0]}`} alt="places photo" />
+        <Image className="rounded-2xl aspect-square object-cover" src={place.photos[0]} alt="places photo" />
       </div>
       <div className="flex justify-between items-center">
       <h2 className="truncate">{place.location}</h2>

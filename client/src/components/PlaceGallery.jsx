@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react"
+import Image from "./Image"
 
 const PlaceGallery = ({place}) => {
     const [showPhotos, setShowPhotos] = useState(false)
@@ -17,7 +18,7 @@ const PlaceGallery = ({place}) => {
               </button>
               {place?.photos?.length > 0 && place.photos.map((photo) => (
                 <div key={place.photos + place._id}>
-                  <img src={`http://localhost:8000/uploads/${photo}`} alt="photo"/>
+                  <Image src={photo} alt="photo"/>
                 </div>
               ))}
             </div>
@@ -32,17 +33,17 @@ const PlaceGallery = ({place}) => {
                     <div>
                         {place.photos?.[0] && (
                         <div>
-                            <img onClick={() => setShowPhotos(true)} className="cursor-pointer aspect-square object-cover" src={`http://localhost:8000/uploads/${place.photos[0]}`} alt="photo" />
+                            <Image onClick={() => setShowPhotos(true)} className="cursor-pointer aspect-square object-cover" src={`${place.photos[0]}`} alt="photo" />
                         </div>
                         )}
                     </div>
                     <div className="grid">
                         {place.photos?.[1] && (
-                        <img onClick={() => setShowPhotos(true)} className="cursor-pointer aspect-square object-cover " src={`http://localhost:8000/uploads/${place.photos[1]}`} alt="photo" />
+                        <Image onClick={() => setShowPhotos(true)} className="cursor-pointer aspect-square object-cover " src={`${place.photos[1]}`} alt="photo" />
                         )}
                         <div className="border overflow-hidden">
                         {place.photos?.[2] && (
-                            <img onClick={() => setShowPhotos(true)} className="cursor-pointer aspect-square object-cover relative top-2" src={`http://localhost:8000/uploads/${place.photos[2]}`} alt="photo" />
+                            <Image onClick={() => setShowPhotos(true)} className="cursor-pointer aspect-square object-cover relative top-2" src={`${place.photos[2]}`} alt="photo" />
                         )}
                         </div>
                     </div>
