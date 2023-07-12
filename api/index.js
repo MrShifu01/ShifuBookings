@@ -21,7 +21,7 @@ const bucket = 'shifubookings'
 
 // Middleware
 const photosMiddleware = multer({dest: '/tmp'})
-app.use('/uploads', express.static(__dirname + '/uploads'))
+app.use('/api/uploads', express.static(__dirname + '/uploads'))
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
@@ -52,7 +52,7 @@ async function uploadToS3 (path, originalFilename, mimetype) {
 }
 
 // User registration
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const {name, email, password} = req.body
     try {
@@ -71,7 +71,7 @@ app.post('/register', async (req, res) => {
 })
 
 // User login
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const { email, password } = req.body
     const userDoc = await User.findOne({email})
@@ -92,12 +92,12 @@ app.post('/login', async (req, res) => {
 })
 
 // User Logout
-app.post('/logout', (req, res) => {
+app.post('/api/logout', (req, res) => {
     res.cookie('token', '').json('logged out')
 })
 
 // Upload Photos By Link
-app.post('/upload-by-link', async (req, res) => {
+app.post('/api/upload-by-link', async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const { link } = req.body
     const newName = "photo" + Date.now() + '.jpg'
@@ -110,7 +110,7 @@ app.post('/upload-by-link', async (req, res) => {
 })
 
 // Upload Photos by Upload
-app.post('/upload', photosMiddleware.array('photos', 100), async (req, res) => {
+app.post('/api/upload', photosMiddleware.array('photos', 100), async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const uploadedFiles = []
     for (let i = 0; i < req.files.length; i++) {
@@ -124,7 +124,7 @@ app.post('/upload', photosMiddleware.array('photos', 100), async (req, res) => {
 })
 
 // Post a new place
-app.post('/places', async (req, res) => {
+app.post('/api/places', async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const { token } = req.cookies
     const { title, addedPhotos, location, description, checkIn, checkOut, maxGuests, price, features, extraInfo } = req.body
@@ -149,7 +149,7 @@ app.post('/places', async (req, res) => {
 })
 
 // Get places for a specific user
-app.get('/user-places', (req, res) => {
+app.get('/api/user-places', (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const { token } = req.cookies
     jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
@@ -161,7 +161,7 @@ app.get('/user-places', (req, res) => {
 })
 
 // Get individual place according to ID
-app.get('/places/:id', async (req, res) => {
+app.get('/api/places/:id', async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const { id } = req.params
     const placeInfo = await Place.findById(id)
@@ -169,7 +169,7 @@ app.get('/places/:id', async (req, res) => {
 })
 
 // Update Places
-app.put('/places', async (req, res) => {
+app.put('/api/places', async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const { token } = req.cookies
     const { id, title, addedPhotos, location, description, checkIn, checkOut, maxGuests, price, features, extraInfo } = req.body
@@ -188,14 +188,14 @@ app.put('/places', async (req, res) => {
 })
 
 // Get all Places
-app.get('/places', async (req, res) => {
+app.get('/api/places', async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const places = await Place.find()
     res.json(places)
 })
 
 // Get One place
-app.get('/place/:id', async (req, res) => {
+app.get('/api/place/:id', async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const {id} = req.params
     const place = await Place.findById(id)
@@ -203,7 +203,7 @@ app.get('/place/:id', async (req, res) => {
 })
 
 // Make a booking
-app.post('/bookings', async (req, res) => {
+app.post('/api/bookings', async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const { checkIn, checkOut, guests, name, email, place, price } = req.body
     const { token } = req.cookies
@@ -220,7 +220,7 @@ app.post('/bookings', async (req, res) => {
 })
 
 // Get users bookings
-app.get('/bookings', async (req, res) => {
+app.get('/api/bookings', async (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const { token } = req.cookies
 
