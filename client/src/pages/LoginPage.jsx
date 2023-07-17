@@ -26,7 +26,6 @@ const LoginPage = () => {
       })
 
       dispatch(setUser(response.data))
-      alert("login success")
       setRedirect(true)
     } catch (e) {
       alert("login failed")
@@ -46,13 +45,13 @@ const LoginPage = () => {
         <form onSubmit={handleLogin} className="max-w-md mx-auto">
           <input 
           type="text" 
-          placeholder='your@email.com' 
+          placeholder='dave@gmail.com' 
           value={email}
           onChange={e => setEmail(e.target.value)}
           />
           <input 
           type="password" 
-          placeholder='password' 
+          placeholder='dave' 
           value={password}
           onChange={e => setPassword(e.target.value)}
           />
@@ -61,6 +60,11 @@ const LoginPage = () => {
             Dont have an account? <Link className='underline text-black' to='/register'>Register</Link>
           </div>
         </form>
+        <div>
+          <h2 className='text-2xl mt-2'>Demo Account</h2>
+          <p><strong>Email: </strong>dave@gmail.com</p>
+          <p><strong>Password: </strong>dave</p>
+        </div>
       </div>
     </div>
   )
