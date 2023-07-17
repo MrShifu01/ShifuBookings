@@ -24,7 +24,7 @@ const BookingsPage = () => {
             className="flex mb-2 gap-4 bg-gray-200 rounded-2xl overflow-hidden" key={booking._id}>
               <div className="w-48">
                 {booking.place.photos.length > 0 && (
-                    <img className="object-cover" src={`http://localhost:8000/uploads/${booking.place.photos[0]}`} alt="place image"/>
+                    <img className="object-cover" src={booking.place.photos[0]} alt="place image"/>
                 )}
               </div>
               <div className="grow pr-3">
