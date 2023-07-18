@@ -63,7 +63,7 @@ app.post('/api/register', async (req, res) => {
         })
         jwt.sign({email:userDoc.email, id:userDoc._id}, process.env.JWT_SECRET, {}, (error, token) => {
             if (error) throw error
-            res.cookie('token', token. {
+            res.cookie('token', token, {
                 httpOnly: true,
                 secure: true,
                 sameSite: 'none',
