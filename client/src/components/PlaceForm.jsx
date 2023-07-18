@@ -142,18 +142,18 @@ const PlaceForm = () => {
                         <h3 className="mt-2 -mb-1">Check in time</h3>
                         <input
                         type="text"
-                        placeholder="14:00"
+                        placeholder="14"
                         value={checkIn}
-                        onChange={e => setCheckIn(e.target.value)}
+                        onChange={e => setCheckIn(Number(e.target.value))}
                         />
                     </div>
                     <div>
                         <h3 className="mt-2 -mb-1">Check out time</h3>
                         <input
                         type="text"
-                        placeholder="11:00"
+                        placeholder="11"
                         value={checkOut}
-                        onChange={e => setCheckOut(e.target.value)}
+                        onChange={e => setCheckOut(Number(e.target.value))}
                         />
                     </div>
                     <div>
@@ -161,7 +161,7 @@ const PlaceForm = () => {
                         <input
                         type="number"
                         value={maxGuests}
-                        onChange={e => setMaxGuests(e.target.value)}
+                        onChange={e => setMaxGuests(Number(e.target.value))}
                         />
                     </div>
                     <div>
@@ -169,7 +169,7 @@ const PlaceForm = () => {
                         <input
                         type="number"
                         value={price}
-                        onChange={e => setPrice(e.target.value)}
+                        onChange={e => setPrice(Number(e.target.value))}
                         />
                     </div>
                 </div>
