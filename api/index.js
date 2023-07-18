@@ -63,7 +63,11 @@ app.post('/api/register', async (req, res) => {
         })
         jwt.sign({email:userDoc.email, id:userDoc._id}, process.env.JWT_SECRET, {}, (error, token) => {
             if (error) throw error
-            res.cookie('token', token).json(userDoc)
+            res.cookie('token', token. {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none',
+            }).json(userDoc)
         })
     } catch (e) {
         res.status(400).json("Unable to register user")
@@ -80,10 +84,15 @@ app.post('/api/login', async (req, res) => {
         if (passOk) {
             jwt.sign({email:userDoc.email, id:userDoc._id}, process.env.JWT_SECRET, {}, (error, token) => {
                 if (error) throw error;
-                res.cookie('token', token).json(userDoc)
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'none',
+                }).json(userDoc)
             })
         } else {
             res.status(400).json(userDoc)
+            console.log(token)
         }
     } else {
         res.status(400).json('user not found')
@@ -152,6 +161,7 @@ app.post('/api/places', async (req, res) => {
 app.get('/api/user-places', (req, res) => {
     mongoose.connect(process.env.MONGO_URI)
     const { token } = req.cookies
+    console.log(token)
     jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
         if (error) throw error
         const userId = userData.id
